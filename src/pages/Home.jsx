@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ArrowRight, Waves, Anchor, Compass, Camera, Sparkles } from 'lucide-react';
 import heroImage from '../assets/hero-dive.png';
 import aboutImage from '../assets/about-beach.png';

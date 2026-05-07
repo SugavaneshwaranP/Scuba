@@ -29,47 +29,68 @@ const FloatingDockMobile = ({
 }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className={cn("relative block md:hidden", className)}>
+    <div className={cn("block md:hidden", className)}>
       <AnimatePresence>
         {open && (
           <motion.div
-            layoutId="nav"
-            className="absolute bottom-full mb-2 inset-x-0 flex flex-col gap-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-[#004D4D]/20 backdrop-blur-2xl flex flex-col items-center justify-center pointer-events-auto"
           >
-            {items.map((item, idx) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                exit={{
-                  opacity: 0,
-                  y: 10,
-                  transition: {
-                    delay: idx * 0.05,
-                  },
-                }}
-                transition={{ delay: (items.length - 1 - idx) * 0.05 }}
-              >
-                <Link
-                  to={item.href}
+            <motion.div 
+              className="flex flex-col gap-8 items-center"
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={{
+                open: {
+                  transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+                },
+                closed: {
+                  transition: { staggerChildren: 0.05, staggerDirection: -1 }
+                }
+              }}
+            >
+              {items.map((item) => (
+                <motion.div
                   key={item.title}
-                  className="h-10 w-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center"
+                  variants={{
+                    open: { opacity: 1, y: 0, scale: 1 },
+                    closed: { opacity: 0, y: 20, scale: 0.8 }
+                  }}
                 >
-                  <div className="h-4 w-4">{item.icon}</div>
-                </Link>
-              </motion.div>
-            ))}
+                  <Link
+                    to={item.href}
+                    onClick={() => setOpen(false)}
+                    className="flex flex-col items-center gap-3 group no-underline"
+                  >
+                    <div className="h-16 w-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+                      <div className="h-8 w-8">{item.icon}</div>
+                    </div>
+                    <span className="text-sm font-black uppercase tracking-[0.2em] text-white/80 group-hover:text-white transition-colors">
+                      {item.title}
+                    </span>
+                  </Link>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            <button
+              onClick={() => setOpen(false)}
+              className="absolute top-8 right-8 h-12 w-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white"
+            >
+              <X className="h-6 w-6" />
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
+      
       <button
         onClick={() => setOpen(!open)}
-        className="h-10 w-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center"
+        className="h-12 w-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center pointer-events-auto shadow-xl"
       >
-        <Menu className="h-5 w-5 text-neutral-500" />
+        <Menu className="h-6 w-6 text-[#004D4D]" />
       </button>
     </div>
   );

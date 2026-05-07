@@ -52,9 +52,9 @@ function Navigation() {
         y: isHidden ? -20 : 0
       }}
       transition={{ duration: 0.3 }}
-      className="fixed top-0 left-0 w-full p-8 md:p-12 flex justify-between items-center z-50 pointer-events-none"
+      className="fixed top-0 left-0 w-full p-6 md:p-12 flex justify-between items-center z-50 pointer-events-none"
     >
-      <Link to="/" className="text-3xl font-black pacifico text-[#004D4D] no-underline pointer-events-auto">
+      <Link to="/" className="text-2xl md:text-3xl font-black pacifico text-[#004D4D] no-underline pointer-events-auto">
         Aquamarine
       </Link>
       

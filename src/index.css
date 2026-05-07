@@ -1,0 +1,45 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+@theme {
+  --color-background: #F8FBFA;
+  --color-primary: #004D4D;
+  --color-secondary: #B2D8D8;
+  --color-text-primary: #004D4D;
+  --color-accent: #008080;
+}
+
+:root {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #004D4D;
+  background-color: #F8FBFA;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #F8FBFA;
+  overflow-x: hidden;
+}
+
+.pacifico {
+  font-family: 'Pacifico', cursive !important;
+}
+
+.watercolor-splash {
+  position: absolute;
+  filter: blur(60px);
+  opacity: 0.5;
+  border-radius: 50%;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
+}
+
+.animate-float {
+  animation: float 10s ease-in-out infinite;
+}

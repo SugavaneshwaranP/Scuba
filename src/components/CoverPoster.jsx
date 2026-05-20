@@ -149,16 +149,16 @@ export default function CoverPoster() {
       >
         
         {/* HEADER SECTION: Full-Width Title & Description (12 Cols) */}
-        <div className="col-span-12 md:col-span-2 lg:col-span-12 flex flex-col md:flex-row md:items-center md:justify-between border-b-4 border-brand-brown pb-6 mb-4 relative z-20">
+        <div className="col-span-1 md:col-span-2 lg:col-span-12 flex flex-col md:flex-row md:items-center md:justify-between border-b-4 border-brand-brown pb-6 mb-4 relative z-20">
           <motion.div variants={titleBlockVariants} className="relative select-none max-w-xl">
             {/* Ink-outlined layered background shadows for maximum legibility */}
             <div 
-              className="absolute top-1 left-1 font-manga-title text-6xl md:text-8xl tracking-tight text-transparent pointer-events-none select-none opacity-80"
+              className="absolute top-1 left-1 font-manga-title text-[13vw] sm:text-6xl md:text-8xl tracking-tight text-transparent pointer-events-none select-none opacity-80"
               style={{ WebkitTextStroke: '2px var(--color-brand-brown)' }}
             >
               AQUAMARINE
             </div>
-            <h2 className="relative font-manga-title text-6xl md:text-8xl tracking-tight text-brand-brown leading-none filter drop-shadow-[3px_3px_0px_var(--color-brand-cream)] text-shimmer">
+            <h2 className="relative font-manga-title text-[13vw] sm:text-6xl md:text-8xl tracking-tight text-brand-brown leading-none filter drop-shadow-[3px_3px_0px_var(--color-brand-cream)] text-shimmer">
               <AnimatedText text="AQUAMARINE" variant="stagger" staggerMs={60} delay={200} />
             </h2>
             <span className="absolute -right-6 -bottom-4 bg-brand-sage text-brand-cream border-2 border-brand-brown px-3 py-1 font-manga-action text-xs rounded-full shadow-[2.5px_2.5px_0_0_var(--color-brand-brown)] transform rotate-6 animate-heartbeat">

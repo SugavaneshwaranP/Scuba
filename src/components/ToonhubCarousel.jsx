@@ -51,12 +51,51 @@ const SLIDES = [
 const DUR  = '700ms cubic-bezier(0.34, 1.3, 0.64, 1)';
 const FAST = '150ms ease';
 
-function getRoleStyle(role, m) {
+function getRoleStyle(role, layout) {
+  const isMobile = layout === 'mobile';
+  const isTablet = layout === 'tablet';
+  
   switch (role) {
-    case 'center': return { left:'50%', transform:`translateX(-50%) scale(${m?1.55:2.1})`,  filter:'blur(0px)', opacity:1,    zIndex:20, height:m?'75%':'110%', bottom:m?'8%':'-4%' };
-    case 'left':   return { left:m?'18%':'26%', transform:'translateX(-50%) scale(1)',        filter:'blur(2px)', opacity:0.75, zIndex:10, height:m?'20%':'34%',  bottom:m?'28%':'10%' };
-    case 'right':  return { left:m?'82%':'74%', transform:'translateX(-50%) scale(1)',        filter:'blur(2px)', opacity:0.75, zIndex:10, height:m?'20%':'34%',  bottom:m?'28%':'10%' };
-    default:       return { left:'50%',          transform:'translateX(-50%) scale(1)',        filter:'blur(4px)', opacity:0.5,  zIndex:5,  height:m?'14%':'24%',  bottom:m?'28%':'10%' };
+    case 'center': 
+      return { 
+        left: '50%', 
+        transform: `translateX(-50%) scale(${isMobile ? 1.45 : isTablet ? 1.75 : 2.1})`,  
+        filter: 'blur(0px)', 
+        opacity: 1,    
+        zIndex: 20, 
+        height: isMobile ? '70%' : isTablet ? '85%' : '108%', 
+        bottom: isMobile ? '12%' : isTablet ? '4%' : '-4%' 
+      };
+    case 'left':   
+      return { 
+        left: isMobile ? '15%' : isTablet ? '22%' : '26%', 
+        transform: 'translateX(-50%) scale(1)',        
+        filter: 'blur(2px)', 
+        opacity: 0.75, 
+        zIndex: 10, 
+        height: isMobile ? '20%' : isTablet ? '28%' : '34%',  
+        bottom: isMobile ? '26%' : isTablet ? '18%' : '10%' 
+      };
+    case 'right':  
+      return { 
+        left: isMobile ? '85%' : isTablet ? '78%' : '74%', 
+        transform: 'translateX(-50%) scale(1)',        
+        filter: 'blur(2px)', 
+        opacity: 0.75, 
+        zIndex: 10, 
+        height: isMobile ? '20%' : isTablet ? '28%' : '34%',  
+        bottom: isMobile ? '26%' : isTablet ? '18%' : '10%' 
+      };
+    default:       
+      return { 
+        left: '50%',          
+        transform: 'translateX(-50%) scale(1)',        
+        filter: 'blur(4px)', 
+        opacity: 0.5,  
+        zIndex: 5,  
+        height: isMobile ? '14%' : isTablet ? '20%' : '24%',  
+        bottom: isMobile ? '26%' : isTablet ? '18%' : '10%' 
+      };
   }
 }
 
@@ -65,14 +104,28 @@ const NOISE = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http:
 export default function ToonhubCarousel() {
   const [active, setActive]       = useState(0);
   const [animating, setAnimating] = useState(false);
-  const [mobile, setMobile]       = useState(window.innerWidth < 640);
+  
+  const getLayoutType = (w) => {
+    if (w < 768) return 'mobile';
+    if (w < 1024) return 'tablet';
+    return 'desktop';
+  };
+
+  const [layout, setLayout] = useState(() => getLayoutType(window.innerWidth));
 
   useEffect(() => {
     SLIDES.forEach(s => { const i = new Image(); i.src = s.src; });
   }, []);
 
   useEffect(() => {
-    const fn = () => setMobile(window.innerWidth < 640);
+    let lastWidth = window.innerWidth;
+    const fn = () => {
+      const currentWidth = window.innerWidth;
+      if (currentWidth !== lastWidth) {
+        setLayout(getLayoutType(currentWidth));
+        lastWidth = currentWidth;
+      }
+    };
     window.addEventListener('resize', fn);
     return () => window.removeEventListener('resize', fn);
   }, []);
@@ -118,13 +171,16 @@ export default function ToonhubCarousel() {
         {/* 2 — Panel shape behind center character */}
         <div aria-hidden="true" style={{
           position:'absolute', left:'50%', transform:'translateX(-50%)',
-          bottom:0, width: mobile?'65%':'44%', height: mobile?'95%':'112%',
+          bottom:0,
+          width: layout === 'mobile' ? '75%' : layout === 'tablet' ? '55%' : '44%',
+          height: layout === 'mobile' ? '90%' : layout === 'tablet' ? '98%' : '112%',
           background: slide.panel, transition:`background ${DUR}, width ${DUR}`,
           clipPath:'polygon(8% 0%,92% 0%,100% 100%,0% 100%)', zIndex:2,
         }}/>
         <div aria-hidden="true" style={{
           position:'absolute', left:'calc(50% - 10%)', bottom:0,
-          width: mobile?'6%':'4%', height: mobile?'90%':'108%',
+          width: layout === 'mobile' ? '6%' : '4%',
+          height: layout === 'mobile' ? '82%' : layout === 'tablet' ? '92%' : '108%',
           background:'rgba(255,255,255,0.22)', clipPath:'polygon(0 3%,100% 0,100% 100%,0 100%)',
           zIndex:2, transition:`height ${DUR}`,
         }}/>
@@ -140,19 +196,19 @@ export default function ToonhubCarousel() {
         <div aria-hidden="true" style={{ position:'absolute', inset:0, pointerEvents:'none', zIndex:1, backgroundImage:'radial-gradient(rgba(var(--rgb-brand-brown),0.18) 1.5px,transparent 1.5px)', backgroundSize:'10px 10px' }}/>
 
         {/* 5 — Top-left brand */}
-        <div style={{ position:'absolute', top:'1.5rem', left: mobile?'1rem':'2rem', zIndex:60, fontFamily:'"Permanent Marker",cursive', fontSize:'0.72rem', fontWeight:600, textTransform:'uppercase', color:'var(--color-brand-brown)', opacity:0.9, letterSpacing:'0.18em' }}>
+        <div style={{ position:'absolute', top:'1.5rem', left: layout === 'mobile' ? '1rem' : '2rem', zIndex:60, fontFamily:'"Permanent Marker",cursive', fontSize:'0.72rem', fontWeight:600, textTransform:'uppercase', color:'var(--color-brand-brown)', opacity:0.9, letterSpacing:'0.18em' }}>
           ⚓ AQUAMARINE
         </div>
 
         {/* 6 — Chapter stamp top-right */}
-        <div style={{ position:'absolute', top:'1.5rem', right: mobile?'1rem':'2rem', zIndex:60 }}>
+        <div style={{ position:'absolute', top:'1.5rem', right: layout === 'mobile' ? '1rem' : '2rem', zIndex:60 }}>
           <span style={{ background:'var(--color-brand-brown)', color:'var(--color-brand-cream)', fontFamily:'"Permanent Marker",cursive', fontSize:'0.62rem', textTransform:'uppercase', letterSpacing:'0.14em', padding:'0.25rem 0.8rem', border:'2px solid var(--color-brand-sand)', boxShadow:'2px 2px 0 0 var(--color-brand-sand)', display:'inline-block', transform:'skewX(-8deg)', transition:`background ${DUR}` }}>
             {slide.icon} {slide.chapter}
           </span>
         </div>
 
-        {/* 7 — Course nav pills (top-center, desktop) */}
-        {!mobile && (
+        {/* 7 — Course nav pills (top-center, desktop/tablet) */}
+        {layout !== 'mobile' && (
           <div style={{ position:'absolute', top:'1.5rem', left:'50%', transform:'translateX(-50%)', zIndex:60, display:'flex', gap:'0.4rem' }}>
             {SLIDES.map((s, i) => (
               <button
@@ -181,7 +237,7 @@ export default function ToonhubCarousel() {
 
         {/* 8 — Carousel characters */}
         {SLIDES.map((s, i) => {
-          const rs = getRoleStyle(roleOf(i), mobile);
+          const rs = getRoleStyle(roleOf(i), layout);
           return (
             <div key={i} style={{
               position:'absolute', aspectRatio:'0.6/1', ...rs,
@@ -199,10 +255,10 @@ export default function ToonhubCarousel() {
         {/* 9 — COURSE INFO CARD (bottom-left) — prominent course catalog panel */}
         <div style={{
           position:        'absolute',
-          bottom:          mobile ? '1rem' : '3.5rem',
-          left:            mobile ? '0.75rem' : '2rem',
+          bottom:          layout === 'mobile' ? '1.5rem' : layout === 'tablet' ? '2.5rem' : '3.5rem',
+          left:            layout === 'mobile' ? '0.75rem' : '2rem',
           zIndex:          60,
-          width:           mobile ? 'calc(100% - 1.5rem)' : '340px',
+          width:           layout === 'mobile' ? 'calc(100% - 1.5rem)' : layout === 'tablet' ? '350px' : '340px',
           background:      'rgba(var(--rgb-brand-cream),0.92)',
           border:          '3px solid var(--color-brand-brown)',
           boxShadow:       '5px 5px 0 0 var(--color-brand-sand)',
@@ -211,24 +267,24 @@ export default function ToonhubCarousel() {
         }}>
 
           {/* Card header bar */}
-          <div style={{ background:'var(--color-brand-brown)', padding: mobile ? '0.5rem 0.75rem' : '0.6rem 1rem', display:'flex', alignItems:'center', justifyBetween:'space-between' }}>
+          <div style={{ background:'var(--color-brand-brown)', padding: layout === 'mobile' ? '0.5rem 0.75rem' : '0.6rem 1rem', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
             <div style={{ display:'flex', alignItems:'center', gap:'0.4rem' }}>
-              <span style={{ fontSize: mobile ? '1rem' : '1.1rem' }}>{slide.icon}</span>
-              <span style={{ fontFamily:'"Permanent Marker",cursive', fontSize: mobile ? '0.62rem' : '0.7rem', color:'var(--color-brand-cream)', textTransform:'uppercase', letterSpacing:'0.14em' }}>
+              <span style={{ fontSize: layout === 'mobile' ? '1rem' : '1.1rem' }}>{slide.icon}</span>
+              <span style={{ fontFamily:'"Permanent Marker",cursive', fontSize: layout === 'mobile' ? '0.62rem' : '0.7rem', color:'var(--color-brand-cream)', textTransform:'uppercase', letterSpacing:'0.14em' }}>
                 EXPEDITION
               </span>
             </div>
             {/* Price badge */}
-            <span style={{ fontFamily:'"DM Serif Display",serif', fontSize: mobile ? '0.85rem' : '1rem', fontWeight:900, color:'var(--color-brand-cream)', letterSpacing:'-0.01em' }}>
+            <span style={{ fontFamily:'"DM Serif Display",serif', fontSize: layout === 'mobile' ? '0.85rem' : '1rem', fontWeight:900, color:'var(--color-brand-cream)', letterSpacing:'-0.01em' }}>
               {slide.price} <span style={{ fontSize:'0.55rem', fontFamily:'"Outfit",sans-serif', opacity:0.75, fontWeight:400 }}>/ person</span>
             </span>
           </div>
 
           {/* Card body */}
-          <div style={{ padding: mobile ? '0.65rem 0.75rem' : '0.85rem 1rem' }}>
+          <div style={{ padding: layout === 'mobile' ? '0.65rem 0.75rem' : '0.85rem 1rem' }}>
 
             {/* Course label + tagline */}
-            <p style={{ fontFamily:'"DM Serif Display",serif', fontSize: mobile ? '1rem' : '1.3rem', fontWeight:700, color:'var(--color-brand-brown)', textTransform:'uppercase', lineHeight:1.05, marginBottom:'0.1rem' }}>
+            <p style={{ fontFamily:'"DM Serif Display",serif', fontSize: layout === 'mobile' ? '1.05rem' : '1.3rem', fontWeight:700, color:'var(--color-brand-brown)', textTransform:'uppercase', lineHeight:1.05, marginBottom:'0.1rem' }}>
               {slide.label}
             </p>
             <p style={{ fontFamily:'"Outfit",sans-serif', fontSize:'0.65rem', fontWeight:600, textTransform:'uppercase', letterSpacing:'0.2em', color:'var(--color-brand-brown)', opacity:0.65, marginBottom:'0.55rem' }}>
@@ -236,7 +292,7 @@ export default function ToonhubCarousel() {
             </p>
 
             {/* Quick stats row */}
-            <div style={{ display:'flex', gap: mobile ? '0.5rem' : '0.65rem', marginBottom:'0.65rem', flexWrap:'wrap' }}>
+            <div style={{ display:'flex', gap: layout === 'mobile' ? '0.5rem' : '0.65rem', marginBottom:'0.65rem', flexWrap:'wrap' }}>
               {[
                 { Icon: Clock,  val: slide.duration  },
                 { Icon: Users,  val: slide.groupSize  },
@@ -250,7 +306,7 @@ export default function ToonhubCarousel() {
             </div>
 
             {/* Blurb */}
-            {!mobile && (
+            {layout !== 'mobile' && (
               <p style={{ fontFamily:'"Comic Neue",cursive', fontSize:'0.78rem', fontWeight:700, color:'var(--color-brand-brown)', opacity:0.85, lineHeight:1.55, marginBottom:'0.7rem', borderLeft:'3px solid var(--color-brand-sand)', paddingLeft:'0.6rem' }}>
                 {slide.blurb}
               </p>
@@ -261,7 +317,7 @@ export default function ToonhubCarousel() {
               {slide.includes.map(item => (
                 <div key={item} style={{ display:'flex', alignItems:'center', gap:'0.25rem' }}>
                   <CheckCircle size={10} color="#1A2D37" strokeWidth={2.5} style={{ flexShrink:0 }} />
-                  <span style={{ fontFamily:'"Outfit",sans-serif', fontSize: mobile ? '0.58rem' : '0.62rem', fontWeight:600, color:'var(--color-brand-brown)', textTransform:'uppercase', letterSpacing:'0.07em' }}>{item}</span>
+                  <span style={{ fontFamily:'"Outfit",sans-serif', fontSize: layout === 'mobile' ? '0.58rem' : '0.62rem', fontWeight:600, color:'var(--color-brand-brown)', textTransform:'uppercase', letterSpacing:'0.07em' }}>{item}</span>
                 </div>
               ))}
             </div>
@@ -292,7 +348,7 @@ export default function ToonhubCarousel() {
               <a
                 href="#chapter-04-booking"
                 id="aqua-book-cta"
-                style={{ display:'flex', alignItems:'center', gap:'0.35rem', background:'var(--color-brand-brown)', color:'var(--color-brand-cream)', fontFamily:'"DM Serif Display",serif', fontSize: mobile ? '0.72rem' : '0.82rem', fontWeight:900, textTransform:'uppercase', letterSpacing:'0.04em', padding:'0.45rem 0.85rem', textDecoration:'none', boxShadow:'3px 3px 0 0 var(--color-brand-sand)', transition:`transform ${FAST}, box-shadow ${FAST}, background ${FAST}` }}
+                style={{ display:'flex', alignItems:'center', gap:'0.35rem', background:'var(--color-brand-brown)', color:'var(--color-brand-cream)', fontFamily:'"DM Serif Display",serif', fontSize: layout === 'mobile' ? '0.72rem' : '0.82rem', fontWeight:900, textTransform:'uppercase', letterSpacing:'0.04em', padding:'0.45rem 0.85rem', textDecoration:'none', boxShadow:'3px 3px 0 0 var(--color-brand-sand)', transition:`transform ${FAST}, box-shadow ${FAST}, background ${FAST}` }}
                 onMouseEnter={e=>{ e.currentTarget.style.transform='translate(-2px,-2px)'; e.currentTarget.style.boxShadow='5px 5px 0 0 var(--color-brand-sand)'; e.currentTarget.style.background='var(--color-brand-sage)'; }}
                 onMouseLeave={e=>{ e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='3px 3px 0 0 var(--color-brand-sand)'; e.currentTarget.style.background='var(--color-brand-brown)'; }}
               >

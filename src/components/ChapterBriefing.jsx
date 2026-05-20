@@ -122,7 +122,7 @@ export default function ChapterBriefing() {
         {/* RIGHT COLUMN: Comic panel classroom artwork (5 Cols) */}
         <div className="lg:col-span-5 flex justify-center order-1 lg:order-2">
           <ScrollReveal animation="slide-left" delay="200ms">
-            <MangaCard className="relative w-full max-w-[260px] lg:max-w-[320px] bg-brand-cream border-4 border-brand-brown p-3 manga-border transform lg:-rotate-1 hover:rotate-0 transition-all duration-500 group">
+            <MangaCard className="relative w-full max-w-[290px] sm:max-w-[320px] bg-brand-cream border-4 border-brand-brown p-3 manga-border transform lg:-rotate-1 hover:rotate-0 transition-all duration-500 group">
               
               <div className="absolute -top-2 left-4 bg-brand-sand text-brand-brown border border-brand-brown px-2 py-0.5 font-manga-action text-3xs tracking-wider z-20 shadow-[1px_1px_0_0_var(--color-brand-brown)] transform -rotate-3 select-none animate-ink-splash">
                 🏫 THE BRIEFING

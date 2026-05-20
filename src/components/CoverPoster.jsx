@@ -145,11 +145,11 @@ export default function CoverPoster() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10"
+        className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 items-stretch relative z-10"
       >
         
         {/* HEADER SECTION: Full-Width Title & Description (12 Cols) */}
-        <div className="col-span-12 flex flex-col md:flex-row md:items-center md:justify-between border-b-4 border-brand-brown pb-6 mb-4 relative z-20">
+        <div className="col-span-12 md:col-span-2 lg:col-span-12 flex flex-col md:flex-row md:items-center md:justify-between border-b-4 border-brand-brown pb-6 mb-4 relative z-20">
           <motion.div variants={titleBlockVariants} className="relative select-none max-w-xl">
             {/* Ink-outlined layered background shadows for maximum legibility */}
             <div 
@@ -174,7 +174,7 @@ export default function CoverPoster() {
         </div>
 
         {/* LEFT COLUMN: Base of Operations Card (4 Cols) */}
-        <div className="lg:col-span-4 flex flex-col justify-center">
+        <div className="md:col-span-1 lg:col-span-4 flex flex-col justify-center">
           {/* Contact details stamp - Styled in Sand (B3AA8B) */}
           <motion.div variants={leftCardVariants}>
             <MangaCard className="bg-brand-sand border-4 border-brand-brown p-5 relative shadow-[6px_6px_0_0_var(--color-brand-brown)] manga-card manga-card-shimmer">
@@ -236,9 +236,9 @@ export default function CoverPoster() {
         </div>
 
         {/* MIDDLE COLUMN: Giant Manga Cover Art (4 Cols) */}
-        <div className="lg:col-span-4 flex items-center justify-center relative z-10">
-          <motion.div variants={middleCardVariants} className="w-full">
-            <MangaCard className="relative w-full max-w-[280px] lg:max-w-none manga-border bg-brand-cream p-3 group">
+        <div className="md:col-span-1 lg:col-span-4 flex items-center justify-center relative z-10">
+          <motion.div variants={middleCardVariants} className="w-full flex justify-center">
+            <MangaCard className="relative w-full max-w-[280px] md:max-w-[340px] lg:max-w-none manga-border bg-brand-cream p-3 group">
               
               <div className="absolute top-4 left-4 bg-brand-brown text-brand-cream font-manga-action text-3xs px-2.5 py-0.5 z-20 shadow-[1px_1px_0_0_#FFFDD0] border border-brand-brown transform -rotate-6 animate-ink-splash">
                 NEW RELEASE
@@ -275,7 +275,7 @@ export default function CoverPoster() {
         </div>
 
         {/* RIGHT COLUMN: Courses Index & Scroll Prompt (4 Cols) - Styled with Light Sage (D4D9B2) */}
-        <div className="lg:col-span-4 flex flex-col justify-center gap-6">
+        <div className="md:col-span-2 lg:col-span-4 flex flex-col justify-center gap-6">
           <motion.div variants={rightCardVariants}>
             <MangaCard className="bg-brand-light-sage border-4 border-brand-brown p-5 relative shadow-[6px_6px_0_0_var(--color-brand-brown)] flex flex-col justify-between manga-card manga-card-shimmer animate-neon-pulse">
               <div className="absolute inset-0 manga-dots opacity-20 pointer-events-none"></div>

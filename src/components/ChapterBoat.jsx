@@ -66,7 +66,7 @@ export default function ChapterBoat() {
         {/* LEFT: Boat manga panel */}
         <div className="lg:col-span-5 flex justify-center order-1">
           <ScrollReveal animation="slide-right" delay="100ms">
-            <MangaCard className="relative w-full max-w-[260px] lg:max-w-[320px] manga-border bg-brand-cream p-3 transform lg:rotate-1 hover:rotate-0 transition-transform duration-500 group">
+            <MangaCard className="relative w-full max-w-[290px] sm:max-w-[320px] manga-border bg-brand-cream p-3 transform lg:rotate-1 hover:rotate-0 transition-transform duration-500 group">
 
               <div className="absolute -top-2 right-4 bg-brand-sage text-brand-cream border border-brand-brown px-2 py-0.5 font-manga-action text-3xs tracking-wider z-20 shadow-[1px_1px_0_0_var(--color-brand-brown)] transform rotate-3 select-none animate-ink-splash">
                 ⛵ BOAT DECK

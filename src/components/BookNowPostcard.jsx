@@ -44,16 +44,16 @@ export default function BookNowPostcard() {
       <div className="absolute inset-0 manga-dots pointer-events-none opacity-20"></div>
 
       {/* Postcard header */}
-      <div className="max-w-6xl mx-auto flex justify-between items-center border-b-4 border-brand-cream/80 pb-2 mb-8 relative z-10">
+      <div className="max-w-6xl mx-auto flex justify-between items-center border-b-4 border-brand-brown/80 pb-2 mb-8 relative z-10">
         <div className="flex items-center gap-2">
-          <span className="bg-brand-cream text-brand-brown font-manga-action text-3xs px-2.5 py-0.5 select-none animate-ink-splash">
+          <span className="bg-brand-brown text-brand-cream font-manga-action text-3xs px-2.5 py-0.5 select-none animate-ink-splash">
             ✉️ YOUR LEGEND
           </span>
-          <h3 className="font-manga-title text-xl lg:text-2xl text-brand-cream tracking-wide leading-none">
+          <h3 className="font-manga-title text-xl lg:text-2xl text-brand-brown tracking-wide leading-none">
             <AnimatedText text={`DISPATCH STATION: "WRITE YOUR OWN LEGEND"`} variant="stagger" staggerMs={25} delay={100} />
           </h3>
         </div>
-        <span className="font-mono text-3xs text-brand-light-sage uppercase tracking-wider hidden sm:inline">
+        <span className="font-mono text-3xs text-brand-brown/80 uppercase tracking-wider hidden sm:inline font-bold">
           Courier Terminal
         </span>
       </div>
@@ -251,10 +251,10 @@ export default function BookNowPostcard() {
       </MangaCard>
 
       {/* Smooth Scroll Navigation footer */}
-      <div className="max-w-6xl mx-auto flex justify-between items-center text-3xs font-mono text-brand-cream/80 border-t-2 border-brand-cream/30 pt-3 mt-12 relative z-10">
-        <button onClick={() => scrollToSection('chapter-03-reef-descent')} className="hover:text-brand-light-sage cursor-pointer font-bold select-none focus:outline-none">← BACK TO THE DEEP</button>
+      <div className="max-w-6xl mx-auto flex justify-between items-center text-3xs font-mono text-brand-brown/80 border-t-2 border-brand-brown/30 pt-3 mt-12 relative z-10">
+        <button onClick={() => scrollToSection('chapter-03-reef-descent')} className="hover:text-brand-sage cursor-pointer font-bold select-none focus:outline-none">← BACK TO THE DEEP</button>
         <span className="font-extrabold animate-text-glitch">✉️ YOUR LEGEND ARC</span>
-        <span className="font-bold text-brand-cream/85">SHONEN SCUBA DISPATCH SPECIAL</span>
+        <span className="font-bold text-brand-brown/85">SHONEN SCUBA DISPATCH SPECIAL</span>
       </div>
     </section>
   )

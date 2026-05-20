@@ -148,36 +148,33 @@ export default function CoverPoster() {
         className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10"
       >
         
-        {/* LEFT COLUMN: Title & Core Stamp Briefing (5 Cols) */}
-        <div className="lg:col-span-5 flex flex-col justify-center gap-6 relative z-20">
-          <motion.div variants={titleBlockVariants} className="relative select-none">
+        {/* HEADER SECTION: Full-Width Title & Description (12 Cols) */}
+        <div className="col-span-12 flex flex-col md:flex-row md:items-center md:justify-between border-b-4 border-brand-brown pb-6 mb-4 relative z-20">
+          <motion.div variants={titleBlockVariants} className="relative select-none max-w-xl">
             {/* Ink-outlined layered background shadows for maximum legibility */}
             <div 
-              className="absolute top-1.5 left-1.5 font-manga-title text-7xl lg:text-8xl tracking-tighter text-transparent pointer-events-none select-none opacity-80"
-              style={{ WebkitTextStroke: '3px var(--color-brand-brown)' }}
+              className="absolute top-1 left-1 font-manga-title text-6xl md:text-8xl tracking-tight text-transparent pointer-events-none select-none opacity-80"
+              style={{ WebkitTextStroke: '2px var(--color-brand-brown)' }}
             >
               AQUAMARINE
             </div>
-            <div 
-              className="absolute -top-1 -left-1 font-manga-title text-7xl lg:text-8xl tracking-tighter text-transparent pointer-events-none select-none opacity-60"
-              style={{ WebkitTextStroke: '1.5px var(--color-brand-light-sage)' }}
-            >
-              AQUAMARINE
-            </div>
-            <h2 className="relative font-manga-title text-7xl lg:text-8xl tracking-tighter text-brand-brown leading-none filter drop-shadow-[4px_4px_0px_var(--color-brand-cream)] text-shimmer">
+            <h2 className="relative font-manga-title text-6xl md:text-8xl tracking-tight text-brand-brown leading-none filter drop-shadow-[3px_3px_0px_var(--color-brand-cream)] text-shimmer">
               <AnimatedText text="AQUAMARINE" variant="stagger" staggerMs={60} delay={200} />
             </h2>
-            <span className="absolute -right-2 -bottom-2 bg-brand-sage text-brand-cream border-2 border-brand-brown px-3 py-1 font-manga-action text-xs rounded-full shadow-[2.5px_2.5px_0_0_var(--color-brand-brown)] transform rotate-6 animate-heartbeat">
+            <span className="absolute -right-6 -bottom-4 bg-brand-sage text-brand-cream border-2 border-brand-brown px-3 py-1 font-manga-action text-xs rounded-full shadow-[2.5px_2.5px_0_0_var(--color-brand-brown)] transform rotate-6 animate-heartbeat">
               DIVE CHRONICLES!
             </span>
           </motion.div>
 
-          <motion.div variants={textItemVariants} className="border-l-4 border-brand-brown pl-4 py-1.5 bg-brand-light-sage/20 pr-2">
-            <p className="font-manga-bubble text-base lg:text-lg font-extrabold italic leading-relaxed text-brand-brown">
+          <motion.div variants={textItemVariants} className="mt-6 md:mt-0 md:max-w-md border-l-4 border-brand-brown pl-4 py-1.5 bg-brand-light-sage/20 pr-2">
+            <p className="font-manga-bubble text-base font-extrabold italic leading-relaxed text-brand-brown">
               <AnimatedText text={`"When you submerge, the noise of the world fades. In the silent blue, your epic journey begins..."`} variant="typewriter" staggerMs={25} />
             </p>
           </motion.div>
+        </div>
 
+        {/* LEFT COLUMN: Base of Operations Card (4 Cols) */}
+        <div className="lg:col-span-4 flex flex-col justify-center">
           {/* Contact details stamp - Styled in Sand (B3AA8B) */}
           <motion.div variants={leftCardVariants}>
             <MangaCard className="bg-brand-sand border-4 border-brand-brown p-5 relative shadow-[6px_6px_0_0_var(--color-brand-brown)] manga-card manga-card-shimmer">
@@ -277,8 +274,8 @@ export default function CoverPoster() {
           </motion.div>
         </div>
 
-        {/* RIGHT COLUMN: Courses Index & Scroll Prompt (3 Cols) - Styled with Light Sage (D4D9B2) */}
-        <div className="lg:col-span-3 flex flex-col justify-center gap-6">
+        {/* RIGHT COLUMN: Courses Index & Scroll Prompt (4 Cols) - Styled with Light Sage (D4D9B2) */}
+        <div className="lg:col-span-4 flex flex-col justify-center gap-6">
           <motion.div variants={rightCardVariants}>
             <MangaCard className="bg-brand-light-sage border-4 border-brand-brown p-5 relative shadow-[6px_6px_0_0_var(--color-brand-brown)] flex flex-col justify-between manga-card manga-card-shimmer animate-neon-pulse">
               <div className="absolute inset-0 manga-dots opacity-20 pointer-events-none"></div>

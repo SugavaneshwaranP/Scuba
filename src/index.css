@@ -1,45 +1,787 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&family=Permanent+Marker&family=Kalam:wght@400;700&display=swap');
+
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
 @theme {
-  --color-background: #F8FBFA;
-  --color-primary: #004D4D;
-  --color-secondary: #B2D8D8;
-  --color-text-primary: #004D4D;
-  --color-accent: #008080;
+  --color-brand-brown: #1A2D37;
+  --color-brand-sage: #3B6B73;
+  --color-brand-light-sage: #A0D3CB;
+  --color-brand-cream: #FAF6EB;
+  --color-brand-sand: #D1C09F;
+
+  --rgb-brand-brown: 26, 45, 55;
+  --rgb-brand-sage: 59, 107, 115;
+  --rgb-brand-light-sage: 160, 211, 203;
+  --rgb-brand-cream: 250, 246, 235;
+  --rgb-brand-sand: 209, 192, 159;
+
+  --font-manga-title: "DM Serif Display", serif;
+  --font-manga-action: "Permanent Marker", cursive, system-ui;
+  --font-manga-bubble: "Comic Neue", cursive, system-ui;
+  --font-manga-handwritten: "Kalam", cursive, system-ui;
+  --font-sans: "Outfit", sans-serif;
 }
 
-:root {
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color: #004D4D;
-  background-color: #F8FBFA;
+/* ─── DARK THEME (NIGHT DIVE) OVERRIDES ─── */
+.dark {
+  --color-brand-brown: #FAF6EB;
+  --color-brand-cream: #091319;
+  --color-brand-sand: #182C36;
+  --color-brand-sage: #81C7BC;
+  --color-brand-light-sage: #2C4A52;
+
+  --rgb-brand-brown: 250, 246, 235;
+  --rgb-brand-cream: 9, 19, 25;
+  --rgb-brand-sand: 24, 44, 54;
+  --rgb-brand-sage: 129, 199, 188;
+  --rgb-brand-light-sage: 44, 74, 82;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #F8FBFA;
-  overflow-x: hidden;
+/* Smooth transitions for theme switching */
+body, html, section, .manga-card, header, .manga-paper {
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
 }
 
-.pacifico {
-  font-family: 'Pacifico', cursive !important;
+/* ═══════════════════════════════════════
+   LIQUID GLASS EFFECT  (NFT-spec adapted)
+   ═══════════════════════════════════════ */
+
+/* Base liquid-glass: used on navbar, cards, overlays */
+.liquid-glass {
+  background: rgba(var(--rgb-brand-cream), 0.04);   /* brand-cream tint */
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(var(--rgb-brand-cream), 0.18);
+  position: relative;
+  overflow: hidden;
 }
 
-.watercolor-splash {
+.liquid-glass::before {
+  content: '';
   position: absolute;
-  filter: blur(60px);
-  opacity: 0.5;
-  border-radius: 50%;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--rgb-brand-cream), 0.45) 0%,
+    rgba(var(--rgb-brand-cream), 0.15) 20%,
+    rgba(var(--rgb-brand-cream), 0.0)  40%,
+    rgba(var(--rgb-brand-cream), 0.0)  60%,
+    rgba(var(--rgb-brand-cream), 0.15) 80%,
+    rgba(var(--rgb-brand-cream), 0.45) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-20px) scale(1.05); }
+/* Dark glass variant — for sections with light/cream backgrounds */
+.liquid-glass-dark {
+  background: rgba(var(--rgb-brand-brown), 0.08);    /* brand-brown tint */
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(var(--rgb-brand-brown), 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass-dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--rgb-brand-brown), 0.4) 0%,
+    rgba(var(--rgb-brand-brown), 0.12) 20%,
+    rgba(var(--rgb-brand-brown), 0.0) 40%,
+    rgba(var(--rgb-brand-brown), 0.0) 60%,
+    rgba(var(--rgb-brand-brown), 0.12) 80%,
+    rgba(var(--rgb-brand-brown), 0.4) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ─── LIQUID GLASS HOVER ─── */
+.liquid-glass-hover {
+  transition: background 200ms ease, transform 150ms ease, box-shadow 200ms ease;
+}
+.liquid-glass-hover:hover {
+  background: rgba(var(--rgb-brand-cream), 0.10) !important;
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 1px rgba(var(--rgb-brand-cream), 0.25), 0 8px 24px rgba(var(--rgb-brand-brown), 0.15);
+}
+
+/* ═══════════════════════════════════════
+   PREMIUM MANGA AESTHETIC SYSTEM
+   ═══════════════════════════════════════ */
+
+/* ─── NOISE PAPER TEXTURE ─── */
+.manga-paper {
+  background-color: var(--color-brand-cream);
+  position: relative;
+  overflow: hidden;
+}
+
+.manga-paper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: 10;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ─── SCREEN TONE HALFTONE DOTS ─── */
+.manga-dots {
+  background-image: radial-gradient(rgba(var(--rgb-brand-brown), 0.15) 1.5px, transparent 1.5px);
+  background-size: 10px 10px;
+  transition: background-image 300ms ease, background-size 300ms ease, opacity 300ms ease;
+}
+
+.manga-dots-dense {
+  background-image: radial-gradient(rgba(var(--rgb-brand-brown), 0.25) 2px, transparent 2px);
+  background-size: 6px 6px;
+}
+
+/* ─── SPEEDLINE BACKGROUNDS ─── */
+.manga-speedlines {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(var(--rgb-brand-brown), 0.05),
+    rgba(var(--rgb-brand-brown), 0.05) 1px,
+    transparent 1px,
+    transparent 10px
+  );
+  transition: background 300ms ease, opacity 300ms ease;
+}
+
+/* Dynamic screen tone scaling and speedline shifts on card hover */
+.manga-card:hover .manga-dots {
+  background-image: radial-gradient(rgba(var(--rgb-brand-brown), 0.28) 2.2px, transparent 2.2px) !important;
+  background-size: 8px 8px !important;
+  opacity: 0.35 !important;
+}
+
+.manga-card:hover .manga-speedlines {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(var(--rgb-brand-brown), 0.09),
+    rgba(var(--rgb-brand-brown), 0.09) 1.5px,
+    transparent 1.5px,
+    transparent 7px
+  ) !important;
+  opacity: 0.45 !important;
+}
+
+.manga-speedlines-vertical {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(var(--rgb-brand-brown), 0.04),
+    rgba(var(--rgb-brand-brown), 0.04) 1px,
+    transparent 1px,
+    transparent 8px
+  );
+}
+
+/* ─── DIAGONAL ACTION SLASHES ─── */
+.manga-diagonal-split {
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+}
+
+.manga-diagonal-split-right {
+  clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+/* ═══════════════════════════════════════
+   PREMIUM INTERACTIVE CARD SYSTEM
+   ═══════════════════════════════════════ */
+
+/* ─── MANGA BORDER with smooth hover lift ─── */
+.manga-border {
+  border: 4px solid var(--color-brand-brown);
+  box-shadow: 6px 6px 0px 0px var(--color-brand-brown);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.manga-border:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0px 0px var(--color-brand-brown);
+}
+
+.manga-border-sm {
+  border: 2px solid var(--color-brand-brown);
+  box-shadow: 3px 3px 0px 0px var(--color-brand-brown);
+}
+
+.manga-border-thick {
+  border: 6px solid var(--color-brand-brown);
+  box-shadow: 10px 10px 0px 0px var(--color-brand-brown);
+}
+
+/* ─── PREMIUM CARD: Interactive hover lift + glow ─── */
+.manga-card {
+  position: relative;
+  transition: 
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.manga-card:hover {
+  transform: translateY(-6px) rotate(0deg) !important;
+  box-shadow: 
+    8px 12px 0px 0px rgba(var(--rgb-brand-brown), 0.4),
+    0 20px 40px -10px rgba(var(--rgb-brand-brown), 0.15) !important;
+}
+
+/* ─── SHIMMER SWEEP EFFECT on hover ─── */
+.manga-card-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.manga-card-shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 253, 208, 0.25),
+    transparent
+  );
+  transition: left 0.6s ease;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.manga-card-shimmer:hover::after {
+  left: 150%;
+}
+
+/* ─── INTERACTIVE BUTTON SYSTEM ─── */
+.manga-btn {
+  position: relative;
+  overflow: hidden;
+  transition: 
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.manga-btn:hover {
+  transform: translate(-2px, -2px) skewX(-6deg);
+}
+
+.manga-btn:active {
+  transform: translate(1px, 1px) skewX(-6deg);
+  box-shadow: 1px 1px 0 0 var(--color-brand-brown) !important;
+}
+
+.manga-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--rgb-brand-cream), 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+.manga-btn:hover::before {
+  left: 200%;
+}
+
+/* ═══════════════════════════════════════
+   PREMIUM TEXT EFFECTS
+   ═══════════════════════════════════════ */
+
+/* ─── GRADIENT TEXT SHIMMER ─── */
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-brand-brown) 0%,
+    var(--color-brand-sage) 40%,
+    var(--color-brand-brown) 60%,
+    var(--color-brand-sage) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-text 4s ease-in-out infinite;
+}
+
+@keyframes shimmer-text {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ─── UNDERLINE DRAW ON HOVER ─── */
+.text-underline-draw {
+  position: relative;
+  display: inline-block;
+}
+
+.text-underline-draw::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: var(--color-brand-brown);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.text-underline-draw:hover::after {
+  width: 100%;
+}
+
+/* ═══════════════════════════════════════
+   SPEECH BUBBLE POINTERS
+   ═══════════════════════════════════════ */
+
+.bubble-pointer-left::after {
+  content: "";
+  position: absolute;
+  bottom: 20px;
+  left: -12px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8px 12px 8px 0;
+  border-color: transparent var(--color-brand-cream) transparent transparent;
+  display: block;
+  filter: drop-shadow(-2px 0 0 var(--color-brand-brown));
+  z-index: 2;
+}
+
+.bubble-pointer-left::before {
+  content: "";
+  position: absolute;
+  bottom: 19px;
+  left: -16px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 9px 15px 9px 0;
+  border-color: transparent var(--color-brand-brown) transparent transparent;
+  display: block;
+  z-index: 1;
+}
+
+.bubble-pointer-right::after {
+  content: "";
+  position: absolute;
+  bottom: 20px;
+  right: -12px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8px 0 8px 12px;
+  border-color: transparent transparent transparent var(--color-brand-cream);
+  display: block;
+  filter: drop-shadow(2px 0 0 var(--color-brand-brown));
+  z-index: 2;
+}
+
+.bubble-pointer-right::before {
+  content: "";
+  position: absolute;
+  bottom: 19px;
+  right: -16px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 9px 0 9px 15px;
+  border-color: transparent transparent transparent var(--color-brand-brown);
+  display: block;
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════
+   KEYFRAME ANIMATIONS
+   ═══════════════════════════════════════ */
+
+/* ─── MANGA POP (scroll reveal) ─── */
+@keyframes manga-pop {
+  0% { transform: scale(0.7) rotate(-4deg); opacity: 0; }
+  75% { transform: scale(1.05) rotate(2deg); opacity: 0.95; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.animate-manga-pop {
+  animation: manga-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ─── STAMP PRESS ─── */
+@keyframes stamp-press {
+  0% { transform: scale(3.5) rotate(-25deg); opacity: 0; filter: blur(3px); }
+  45% { transform: scale(0.95) rotate(15deg); opacity: 1; filter: blur(0); }
+  60% { transform: scale(1.05) rotate(10deg); }
+  100% { transform: scale(1) rotate(12deg); opacity: 1; }
+}
+
+.animate-stamp-press {
+  animation: stamp-press 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* ─── ACTION SHAKE (looping micro-motion) ─── */
+@keyframes action-shake {
+  0%, 100% { transform: rotate(-0.3deg) scale(1); }
+  25% { transform: rotate(0.3deg) scale(1.005); }
+  50% { transform: rotate(-0.2deg) scale(0.998); }
+  75% { transform: rotate(0.3deg) scale(1.002); }
+}
+
+.animate-action-shake {
+  animation: action-shake 3s ease-in-out infinite;
+}
+
+/* ─── GENTLE FLOAT (breathing) ─── */
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-gentle-float {
+  animation: gentle-float 4s ease-in-out infinite;
+}
+
+/* ─── WAVE FLOAT ─── */
+@keyframes wave-float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(-1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.animate-wave-float {
+  animation: wave-float 5s ease-in-out infinite;
+}
+
+/* ─── HEARTBEAT GROW ─── */
+@keyframes heartbeat-grow {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+.animate-heartbeat {
+  animation: heartbeat-grow 2s ease-in-out infinite;
+}
+
+/* ─── SWIM ─── */
+@keyframes swim {
+  0% { transform: translate(0, 0) scaleX(1); }
+  50% { transform: translate(15px, -5px) scaleX(1.02); }
+  100% { transform: translate(0, 0) scaleX(1); }
+}
+
+.animate-swim {
+  animation: swim 6s ease-in-out infinite;
+}
+
+/* ─── SCROLL BOUNCE (arrow indicator) ─── */
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+.animate-scroll-bounce {
+  animation: scroll-bounce 1.5s infinite;
+}
+
+/* ─── SPEEDLINES ANIM ─── */
+@keyframes speedlines-anim {
+  0% { transform: scaleY(0.95); opacity: 0.7; }
+  50% { transform: scaleY(1.05); opacity: 1.0; }
+  100% { transform: scaleY(0.95); opacity: 0.7; }
+}
+
+.animate-speedlines-active {
+  animation: speedlines-anim 0.15s linear infinite;
+}
+
+/* ─── BUBBLE FLOAT (decorative) ─── */
+@keyframes float-bubble {
+  0% { transform: translateY(20px) translateX(0) scale(0.8); opacity: 0; }
+  15% { opacity: 0.6; }
+  85% { opacity: 0.6; }
+  100% { transform: translateY(-160px) translateX(15px) scale(1.2); opacity: 0; }
 }
 
 .animate-float {
-  animation: float 10s ease-in-out infinite;
+  animation: float-bubble 4s ease-in-out infinite;
+}
+
+/* ─── PULSE GLOW (subtle ring) ─── */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(169, 180, 148, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(169, 180, 148, 0); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
+/* ─── TAG SLIDE IN ─── */
+@keyframes tag-slide {
+  0% { transform: translateX(-20px) skewX(-12deg); opacity: 0; }
+  100% { transform: translateX(0) skewX(-12deg); opacity: 1; }
+}
+
+.animate-tag-slide {
+  animation: tag-slide 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ═══════════════════════════════════════
+   PREMIUM TEXT ANIMATIONS
+   ═══════════════════════════════════════ */
+
+/* ─── STAGGERED CHARACTER REVEAL ─── */
+@keyframes char-reveal {
+  0% { opacity: 0; transform: translateY(20px) rotateX(-90deg); filter: blur(4px); }
+  60% { opacity: 1; transform: translateY(-3px) rotateX(5deg); filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0) rotateX(0deg); filter: blur(0); }
+}
+
+.animate-char-reveal > span {
+  display: inline-block;
+  opacity: 0;
+  animation: char-reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── TEXT GLITCH / FLICKER ─── */
+@keyframes text-glitch {
+  0%, 100% { transform: translate(0); opacity: 1; }
+  2% { transform: translate(-2px, 1px); opacity: 0.8; }
+  4% { transform: translate(2px, -1px); opacity: 1; }
+  6% { transform: translate(0); }
+  92% { transform: translate(0); }
+  94% { transform: translate(1px, -1px); opacity: 0.9; }
+  96% { transform: translate(-1px, 1px); }
+  98% { transform: translate(0); opacity: 1; }
+}
+
+.animate-text-glitch {
+  animation: text-glitch 5s ease-in-out infinite;
+}
+
+/* ─── INK SPLASH ENTRANCE ─── */
+@keyframes ink-splash {
+  0% { transform: scale(0) rotate(-15deg); opacity: 0; clip-path: circle(0% at 50% 50%); }
+  50% { transform: scale(1.1) rotate(3deg); opacity: 1; clip-path: circle(60% at 50% 50%); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; clip-path: circle(100% at 50% 50%); }
+}
+
+.animate-ink-splash {
+  animation: ink-splash 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ─── SLIDE-UP FADE TEXT ─── */
+@keyframes text-rise {
+  0% { opacity: 0; transform: translateY(30px); filter: blur(6px); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.animate-text-rise {
+  animation: text-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── GRADIENT GLOW TEXT ─── */
+@keyframes gradient-glow {
+  0%, 100% { text-shadow: 0 0 8px rgba(169,180,148,0.3), 0 0 16px rgba(169,180,148,0.1); }
+  50% { text-shadow: 0 0 16px rgba(169,180,148,0.6), 0 0 32px rgba(169,180,148,0.3), 0 0 48px rgba(169,180,148,0.1); }
+}
+
+.animate-gradient-glow {
+  animation: gradient-glow 3s ease-in-out infinite;
+}
+
+/* ─── TYPEWRITER CURSOR ─── */
+@keyframes blink-cursor {
+  0%, 100% { border-right-color: currentColor; }
+  50% { border-right-color: transparent; }
+}
+
+.animate-typewriter-cursor {
+  border-right: 2px solid currentColor;
+  padding-right: 3px;
+  animation: blink-cursor 0.8s step-end infinite;
+}
+
+/* ═══════════════════════════════════════
+   PREMIUM CARD ANIMATIONS  
+   ═══════════════════════════════════════ */
+
+/* ─── 3D TILT ENTRANCE ─── */
+@keyframes card-tilt-in {
+  0% { opacity: 0; transform: perspective(800px) rotateY(-15deg) rotateX(8deg) translateZ(-60px) scale(0.9); }
+  100% { opacity: 1; transform: perspective(800px) rotateY(0deg) rotateX(0deg) translateZ(0px) scale(1); }
+}
+
+.animate-card-tilt-in {
+  animation: card-tilt-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── CARD FLIP IN ─── */
+@keyframes card-flip-in {
+  0% { opacity: 0; transform: perspective(600px) rotateY(90deg); }
+  70% { transform: perspective(600px) rotateY(-8deg); }
+  100% { opacity: 1; transform: perspective(600px) rotateY(0deg); }
+}
+
+.animate-card-flip {
+  animation: card-flip-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── MAGNETIC HOVER (3D tilt follow mouse) ─── */
+.manga-card-magnetic {
+  transition: transform 0.3s cubic-bezier(0.03, 0.98, 0.52, 0.99);
+  will-change: transform;
+}
+
+.manga-card-magnetic:hover {
+  transform: perspective(800px) rotateX(2deg) rotateY(-3deg) translateY(-8px) scale(1.02) !important;
+  box-shadow: 
+    10px 14px 0px 0px rgba(103, 87, 70, 0.35),
+    0 25px 50px -12px rgba(103, 87, 70, 0.2) !important;
+}
+
+/* ─── CARD SLIDE-UP STAGGER HELPER ─── */
+@keyframes card-slide-up {
+  0% { opacity: 0; transform: translateY(40px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-card-slide-up {
+  animation: card-slide-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── SCALE BOUNCE IN ─── */
+@keyframes scale-bounce-in {
+  0% { opacity: 0; transform: scale(0.6); }
+  70% { opacity: 1; transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.animate-scale-bounce {
+  animation: scale-bounce-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ─── NEON BORDER PULSE (for CTA cards) ─── */
+@keyframes neon-border-pulse {
+  0%, 100% { box-shadow: 6px 6px 0 0 var(--color-brand-brown), 0 0 0 0 rgba(var(--rgb-brand-sage), 0); }
+  50% { box-shadow: 6px 6px 0 0 var(--color-brand-brown), 0 0 18px 2px rgba(var(--rgb-brand-sage), 0.25); }
+}
+
+.animate-neon-pulse {
+  animation: neon-border-pulse 2.5s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════
+   PREMIUM STATIC GRADIENT BACKGROUNDS (Optimized for 60fps/120fps Scrolling)
+   ═══════════════════════════════════════ */
+
+.bg-gradient-cream {
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-cream) 0%,
+    #FAF3DF 50%,
+    #EADFCD 100%
+  );
+}
+
+.bg-gradient-sage {
+  background: linear-gradient(
+    150deg,
+    var(--color-brand-cream) 0%,
+    #DEF0ED 40%,
+    var(--color-brand-light-sage) 100%
+  );
+}
+
+.bg-gradient-ocean {
+  background: linear-gradient(
+    140deg,
+    var(--color-brand-light-sage) 0%,
+    var(--color-brand-cream) 30%,
+    var(--color-brand-sage) 70%,
+    var(--color-brand-brown) 100%
+  );
+}
+
+.bg-gradient-sand {
+  background: linear-gradient(
+    160deg,
+    var(--color-brand-sage) 0%,
+    var(--color-brand-sand) 60%,
+    var(--color-brand-cream) 100%
+  );
+}
+
+
+/* ═══════════════════════════════════════
+   CUSTOM SCROLLBAR
+   ═══════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-brand-cream);
+  border-left: 3px solid var(--color-brand-brown);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-brand-brown);
+  border: 3px solid var(--color-brand-cream);
+  border-radius: 9999px;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ═══════════════════════════════════════
+   SMOOTH GLOBAL DEFAULTS
+   ═══════════════════════════════════════ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

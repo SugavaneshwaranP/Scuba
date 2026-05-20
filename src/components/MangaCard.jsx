@@ -6,7 +6,7 @@ import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } fr
  * Tracks mouse cursor precisely and applies organic, fluid tilt effects.
  * Supports React.forwardRef to allow hooks like auto-animate to bind correctly.
  */
-const MangaCard = React.forwardRef(({ children, className = '', ...props }, ref) => {
+const MangaCard = React.forwardRef(({ children, className = '', tilt = true, ...props }, ref) => {
   const x = useMotionValue(0)
   const y = useMotionValue(0)
 
@@ -68,29 +68,31 @@ const MangaCard = React.forwardRef(({ children, className = '', ...props }, ref)
   return (
     <motion.div
       ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      onMouseMove={tilt ? handleMouseMove : undefined}
+      onMouseLeave={tilt ? handleMouseLeave : undefined}
       style={{
-        rotateX,
-        rotateY,
-        z,
-        scale,
-        boxShadow: hasBorder ? dynamicBoxShadow : undefined,
-        transformStyle: 'preserve-3d',
-        perspective: '1000px',
+        rotateX: tilt ? rotateX : 0,
+        rotateY: tilt ? rotateY : 0,
+        z: tilt ? z : 0,
+        scale: tilt ? scale : 1,
+        boxShadow: hasBorder ? (tilt ? dynamicBoxShadow : undefined) : undefined,
+        transformStyle: tilt ? 'preserve-3d' : 'flat',
+        perspective: tilt ? '1000px' : undefined,
       }}
       className={`relative will-change-transform ${className}`}
       {...props}
     >
       {/* Dynamic Seafoam Glass Glow Overlay */}
-      <motion.div 
-        className="absolute inset-0 pointer-events-none rounded-inherit z-30"
-        style={{
-          background: useMotionTemplate`radial-gradient(circle 180px at ${glowX} ${glowY}, rgba(var(--rgb-brand-light-sage), 0.35), transparent 75%)`,
-          opacity: glowOpacity,
-          mixBlendMode: 'color-dodge',
-        }}
-      />
+      {tilt && (
+        <motion.div 
+          className="absolute inset-0 pointer-events-none rounded-inherit z-30"
+          style={{
+            background: useMotionTemplate`radial-gradient(circle 180px at ${glowX} ${glowY}, rgba(var(--rgb-brand-light-sage), 0.35), transparent 75%)`,
+            opacity: glowOpacity,
+            mixBlendMode: 'color-dodge',
+          }}
+        />
+      )}
       {children}
     </motion.div>
   )

@@ -39,7 +39,7 @@ export default function BookNowPostcard() {
   return (
     <section id="chapter-04-booking" className="w-full bg-gradient-sand border-b-8 border-brand-brown py-16 px-4 lg:px-8 relative overflow-hidden">
       {/* Paper noise texture overlay */}
-      <div className="absolute inset-0 pointer-events-none z-[11] opacity-[0.035]" style={{backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")"}}></div>
+      <div className="absolute inset-0 pointer-events-none z-[1] opacity-[0.035]" style={{backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")"}}></div>
       {/* Background Screentone Dots */}
       <div className="absolute inset-0 manga-dots pointer-events-none opacity-20"></div>
 
@@ -59,7 +59,7 @@ export default function BookNowPostcard() {
       </div>
 
       {/* Main post card container - Khaki Sand Postcard (B3AA8B) with Cream input panels */}
-      <MangaCard ref={parent} className="max-w-4xl mx-auto bg-brand-sand border-2 lg:border-4 border-brand-brown p-5 lg:p-8 my-auto w-full relative shadow-[8px_8px_0_0_var(--color-brand-brown)] rounded-sm transform rotate-0.5 relative z-10">
+      <MangaCard ref={parent} tilt={false} className="max-w-4xl mx-auto bg-brand-sand border-2 lg:border-4 border-brand-brown p-5 lg:p-8 my-auto w-full relative shadow-[8px_8px_0_0_var(--color-brand-brown)] rounded-sm transform rotate-0.5 relative z-10">
         <div className="absolute inset-0 manga-dots opacity-10 pointer-events-none"></div>
 
         {successSubmit ? (
